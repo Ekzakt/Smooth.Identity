@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "SelfHost": {
+    "Smooth.Identity": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
