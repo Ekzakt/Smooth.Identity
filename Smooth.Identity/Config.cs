@@ -30,8 +30,8 @@ namespace Smooth.Identity
             {
                 new ApiResource("flauntapi")
                 {
-                    //Scopes = new List<string> { "flauntapi.read", "flauntapi.write" },
-                    ApiSecrets = new List<Secret> { new Secret("secret".Sha256()) },
+                    Scopes = new List<string> { "flauntapi.read", "flauntapi.write" },
+                    ApiSecrets = new List<Secret> { new Secret("apiResourceSecret".Sha256()) },
                     UserClaims = new List<string> { "role" }
                 }
             };
@@ -47,7 +47,7 @@ namespace Smooth.Identity
                     ClientName = "Client Credentials Client",
 
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
-                    ClientSecrets = { new Secret("secret".Sha256()) },
+                    ClientSecrets = { new Secret("clientSecret".Sha256()) },
 
                     AllowedScopes = { "flauntapi.read", "flauntapi.write" }
                 },
