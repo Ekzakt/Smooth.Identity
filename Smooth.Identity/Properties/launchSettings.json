@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "Smooth.Identity": {
+    "Identity": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

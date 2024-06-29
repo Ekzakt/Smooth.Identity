@@ -34,7 +34,9 @@ namespace Smooth.Identity
                 .AddInMemoryIdentityResources(Config.IdentityResources)
                 .AddInMemoryApiScopes(Config.ApiScopes)
                 .AddInMemoryClients(Config.Clients)
+                .AddInMemoryApiResources(Config.ApiResources)
                 .AddAspNetIdentity<ApplicationUser>();
+
 
             builder.Services.AddAuthentication()
                 .AddGoogle(options =>
