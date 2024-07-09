@@ -101,8 +101,8 @@ namespace Smooth.Identity
 
                 new Client
                 {
-                    ClientId = "MvcDemo",
-                    ClientSecrets = { new Secret("secret".Sha256()) },
+                    ClientId = "Flaunt.Shop", // m2m.client
+                    ClientSecrets = { new Secret("ecb76798-1d21-4278-bb83-3d1d07ad186e".Sha256()) },
 
                     AllowedGrantTypes = GrantTypes.Code,
             
