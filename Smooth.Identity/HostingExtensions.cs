@@ -23,6 +23,8 @@ namespace Smooth.Identity
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            var x = builder.Configuration.GetValue<string>("IdentityServer:Clients:0:BaseUri");
+
             builder.Services
                 .AddIdentityServer(options =>
                 {
@@ -47,11 +49,9 @@ namespace Smooth.Identity
                 .AddServerSideSessions()
                 .AddInMemoryIdentityResources(Config.IdentityResources)
                 .AddInMemoryApiScopes(Config.ApiScopes)
-                .AddInMemoryClients(Config.Clients)
+                .AddInMemoryClients(Config.Clients(builder.Configuration))
                 .AddInMemoryApiResources(Config.ApiResources)
                 .AddAspNetIdentity<ApplicationUser>();
-                //.AddOperationalStore(options => options.ConfigureDbContext = b => b.UseSqlServer(connectionString,
-                //  opt => opt.MigrationsAssembly(migrationsAssembly)))
 
             builder.Services.AddAuthentication();
 

@@ -33,7 +33,8 @@ namespace Smooth.Identity
             };
 
 
-        public static IEnumerable<Client> Clients =>
+        public static IEnumerable<Client> Clients(IConfiguration config) =>
+            
             new Client[]
             {
                 // m2m client credentials flow client
@@ -101,16 +102,14 @@ namespace Smooth.Identity
 
                 new Client
                 {
-                    ClientId = "Flaunt.Shop", // m2m.client
-                    ClientSecrets = { new Secret("ecb76798-1d21-4278-bb83-3d1d07ad186e".Sha256()) },
+                    Enabled = true,
 
+                    ClientId = "Flaunt.Shop",
+                    ClientSecrets = { new Secret(config.GetValue<string>("IdentityServer:Clients:0:ClientSecret").Sha256()) },
                     AllowedGrantTypes = GrantTypes.Code,
-            
-                    // where to redirect to after login
-                    RedirectUris = { "https://localhost:7051/signin-oidc" },
-
-                    // where to redirect to after logout
-                    PostLogoutRedirectUris = { "https://localhost:7051/signout-callback-oidc" },
+                    
+                    RedirectUris = { $"{config.GetValue<string>("IdentityServer:Clients:0:BaseUri")}/signin-oidc" },
+                    PostLogoutRedirectUris = { $"{config.GetValue<string>("IdentityServer:Clients:0:BaseUri")}/signout-callback-oidc" },
 
                     AllowedScopes =
                     {
