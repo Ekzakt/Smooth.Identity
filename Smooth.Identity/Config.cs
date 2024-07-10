@@ -93,7 +93,8 @@ namespace Smooth.Identity
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "flauntapi.read"
                     }
                 }
             };
