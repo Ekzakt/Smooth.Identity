@@ -34,7 +34,6 @@ namespace Smooth.Identity
 
 
         public static IEnumerable<Client> Clients(IConfiguration config) =>
-            
             new Client[]
             {
                 // m2m client credentials flow client
@@ -82,26 +81,6 @@ namespace Smooth.Identity
 
                 new Client
                 {
-                    ClientId = "RazorDemo",
-                    ClientSecrets = { new Secret("secret".Sha256()) },
-
-                    AllowedGrantTypes = GrantTypes.Code,
-            
-                    // where to redirect to after login
-                    RedirectUris = { "https://localhost:7150/signin-oidc" },
-
-                    // where to redirect to after logout
-                    PostLogoutRedirectUris = { "https://localhost:7150/signout-callback-oidc" },
-
-                    AllowedScopes =
-                    {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile
-                    }
-                },
-
-                new Client
-                {
                     Enabled = true,
 
                     ClientId = "Flaunt.Shop",
@@ -114,8 +93,7 @@ namespace Smooth.Identity
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile,
-                        "flauntapi.read"
+                        IdentityServerConstants.StandardScopes.Profile
                     }
                 }
             };
