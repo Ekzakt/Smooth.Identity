@@ -52,6 +52,24 @@ namespace Smooth.Identity
                         IdentityServerConstants.StandardScopes.Profile,
                         "flauntapi.read"
                     }
+                },
+                new Client
+                {
+                    Enabled = true,
+
+                    ClientId = "Smooth.Web",
+                    ClientSecrets = { new Secret(config.GetValue<string>("IdentityServer:Clients:1:ClientSecret").Sha256()) },
+                    AllowedGrantTypes = GrantTypes.Code,
+
+                    RedirectUris = { $"{config.GetValue<string>("IdentityServer:Clients:1:BaseUri")}/signin-oidc" },
+                    PostLogoutRedirectUris = { $"{config.GetValue<string>("IdentityServer:Clients:1:BaseUri")}/signout-callback-oidc" },
+
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "flauntapi.read"
+                    }
                 }
                 // m2m client credentials flow client
                 // Flaunt.Api
