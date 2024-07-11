@@ -16,19 +16,18 @@ namespace Smooth.Identity
         public static IEnumerable<ApiScope> ApiScopes =>
             new ApiScope[]
             {
-                new ApiScope("flauntapi.read"),
-                new ApiScope("flauntapi.write")
+                new ApiScope("flauntapi.read", "Read data from Flaunt API."),
+                new ApiScope("flauntapi.write", "Write data to flaunt API.")
             };
 
 
         public static IEnumerable<ApiResource> ApiResources =>
             new ApiResource[]
             {
-                new ApiResource("flauntapi")
+                new ApiResource("Flaunt.Api")
                 {
                     Scopes = new List<string> { "flauntapi.read", "flauntapi.write" },
-                    ApiSecrets = new List<Secret> { new Secret("apiResourceSecret".Sha256()) },
-                    UserClaims = new List<string> { "role" }
+                    //ApiSecrets = new List<Secret> { new Secret("apiResourceSecret".Sha256()) }
                 }
             };
 
@@ -38,16 +37,16 @@ namespace Smooth.Identity
             {
                 // m2m client credentials flow client
                 // Flaunt.Api
-                new Client
-                {
-                    ClientId = "m2m.client",
-                    ClientName = "Client Credentials Client",
+                //new Client
+                //{
+                //    ClientId = "m2m.client",
+                //    ClientName = "Client Credentials Client",
 
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
-                    ClientSecrets = { new Secret("secret_m2m.client".Sha256()) },
+                //    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                //    ClientSecrets = { new Secret("secret_m2m.client".Sha256()) },
 
-                    AllowedScopes = { "flauntapi.read", "flauntapi.write" }
-                },
+                //    AllowedScopes = { "flauntapi.read", "flauntapi.write" }
+                //},
 
                 // interactive client using code flow + pkce
                 // Flaunt.Shop
