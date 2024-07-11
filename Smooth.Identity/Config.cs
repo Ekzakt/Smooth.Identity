@@ -35,6 +35,24 @@ namespace Smooth.Identity
         public static IEnumerable<Client> Clients(IConfiguration config) =>
             new Client[]
             {
+                new Client
+                {
+                    Enabled = true,
+
+                    ClientId = "Smooth.Shop",
+                    ClientSecrets = { new Secret(config.GetValue<string>("IdentityServer:Clients:0:ClientSecret").Sha256()) },
+                    AllowedGrantTypes = GrantTypes.Code,
+
+                    RedirectUris = { $"{config.GetValue<string>("IdentityServer:Clients:0:BaseUri")}/signin-oidc" },
+                    PostLogoutRedirectUris = { $"{config.GetValue<string>("IdentityServer:Clients:0:BaseUri")}/signout-callback-oidc" },
+
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "flauntapi.read"
+                    }
+                }
                 // m2m client credentials flow client
                 // Flaunt.Api
                 //new Client
@@ -76,26 +94,7 @@ namespace Smooth.Identity
                 //    RequirePkce = true,
                 //    RequireConsent = true,
                 //    AllowPlainTextPkce = false
-                // },
-
-                new Client
-                {
-                    Enabled = true,
-
-                    ClientId = "Flaunt.Shop",
-                    ClientSecrets = { new Secret(config.GetValue<string>("IdentityServer:Clients:0:ClientSecret").Sha256()) },
-                    AllowedGrantTypes = GrantTypes.Code,
-                    
-                    RedirectUris = { $"{config.GetValue<string>("IdentityServer:Clients:0:BaseUri")}/signin-oidc" },
-                    PostLogoutRedirectUris = { $"{config.GetValue<string>("IdentityServer:Clients:0:BaseUri")}/signout-callback-oidc" },
-
-                    AllowedScopes =
-                    {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile,
-                        "flauntapi.read"
-                    }
-                }
+                // }
             };
     }
 }
