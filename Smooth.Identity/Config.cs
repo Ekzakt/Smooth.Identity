@@ -9,7 +9,8 @@ namespace Smooth.Identity
             new IdentityResource[]
             {
                 new IdentityResources.OpenId(),
-                new IdentityResources.Profile()
+                new IdentityResources.Profile(),
+                new IdentityResources.Email()
             };
 
 
@@ -40,11 +41,16 @@ namespace Smooth.Identity
                     Enabled = true,
 
                     ClientId = "Smooth.Shop",
+                    ClientName = "Smooth Shop Client",
                     ClientSecrets = { new Secret(config.GetValue<string>("IdentityServer:Clients:0:ClientSecret").Sha256()) },
                     AllowedGrantTypes = GrantTypes.Code,
 
                     RedirectUris = { $"{config.GetValue<string>("IdentityServer:Clients:0:BaseUri")}/signin-oidc" },
                     PostLogoutRedirectUris = { $"{config.GetValue<string>("IdentityServer:Clients:0:BaseUri")}/signout-callback-oidc" },
+
+                    AllowOfflineAccess = true,
+                    RequireConsent = false,
+                    RequirePkce = true,
 
                     AllowedScopes =
                     {
@@ -58,11 +64,16 @@ namespace Smooth.Identity
                     Enabled = true,
 
                     ClientId = "Smooth.Web",
+                    ClientName = "Smooth Web Client",
                     ClientSecrets = { new Secret(config.GetValue<string>("IdentityServer:Clients:1:ClientSecret").Sha256()) },
                     AllowedGrantTypes = GrantTypes.Code,
 
                     RedirectUris = { $"{config.GetValue<string>("IdentityServer:Clients:1:BaseUri")}/signin-oidc" },
                     PostLogoutRedirectUris = { $"{config.GetValue<string>("IdentityServer:Clients:1:BaseUri")}/signout-callback-oidc" },
+
+                    AllowOfflineAccess = true,
+                    RequireConsent = false,
+                    RequirePkce = true,
 
                     AllowedScopes =
                     {
