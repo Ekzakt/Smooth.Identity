@@ -56,6 +56,7 @@ namespace Smooth.Identity
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
                         "flauntapi.read"
                     }
                 },
@@ -79,6 +80,7 @@ namespace Smooth.Identity
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
                         "flauntapi.read"
                     }
                 }
