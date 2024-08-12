@@ -40,8 +40,8 @@ namespace Smooth.Identity
                 .AddOperationalStore(options =>
                 {
                     options.ConfigureDbContext = builder =>
-                        builder.UseSqlServer(sqlConnectionString,
-                            sql => sql.MigrationsAssembly(migrationsAssembly));
+                        builder.UseSqlServer(sqlConnectionString, sqlServerOptionsAction =>
+                            sqlServerOptionsAction.MigrationsAssembly(migrationsAssembly));
 
                     // this enables automatic token cleanup. this is optional.
                     options.EnableTokenCleanup = true;
