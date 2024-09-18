@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Logging;
 using Serilog;
 using Smooth.Identity.Data;
 using Smooth.Identity.Models;
