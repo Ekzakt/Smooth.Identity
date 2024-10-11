@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Reflection;
 
-namespace Smooth.Identity.Pages.Home
+namespace Smooth.Identity.Pages
 {
     [AllowAnonymous]
     public class Index : PageModel
