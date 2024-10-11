@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Smooth.Identity.Models;
 
-namespace Smooth.Identity.Pages.Login
+namespace Smooth.Identity.Pages.Account.Login
 {
     [SecurityHeaders]
     [AllowAnonymous]
@@ -157,7 +157,7 @@ namespace Smooth.Identity.Pages.Login
             var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
             if (context?.IdP != null && await _schemeProvider.GetSchemeAsync(context.IdP) != null)
             {
-                var local = context.IdP == Duende.IdentityServer.IdentityServerConstants.LocalIdentityProvider;
+                var local = context.IdP == IdentityServerConstants.LocalIdentityProvider;
 
                 // this is meant to short circuit the UI and only trigger the one external IdP
                 View = new ViewModel

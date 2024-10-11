@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Smooth.Identity.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class add_tables : Migration
+    public partial class add_operationaldata : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
