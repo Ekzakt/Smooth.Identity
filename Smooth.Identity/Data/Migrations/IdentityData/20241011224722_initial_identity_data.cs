@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Smooth.Identity.Data.Migrations
+namespace Smooth.Identity.Data.Migrations.IdentityData
 {
     /// <inheritdoc />
-    public partial class initial_create : Migration
+    public partial class initial_identity_data : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
