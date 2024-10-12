@@ -52,7 +52,7 @@ internal static class HostingExtensions
             {
                 options.UserInteraction.LoginUrl = "/Account/Login";
                 options.UserInteraction.LogoutUrl = "/Account/Logout";
-                options.UserInteraction.ErrorUrl = "/Error";
+                options.UserInteraction.ErrorUrl = "/Home/Error";
                 options.UserInteraction.ConsentUrl = "/Consent";
 
                 options.IssuerUri = configuration["IdentityServer:IssuerUri"];
