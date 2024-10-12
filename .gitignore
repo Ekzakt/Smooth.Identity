@@ -363,3 +363,11 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
+/Smooth.Identity/Certs/smooth_wildcard.cnf
+/Smooth.Identity/Certs/smooth_wildcard.crt
+/Smooth.Identity/Certs/smooth_wildcard.csr
+/Smooth.Identity/Certs/smooth_wildcard.key
+/Smooth.Identity/Certs/smooth_wildcard.key
+/Smooth.Identity/Certs/smooth_wildcard.csr
+/Smooth.Identity/Certs/smooth_wildcard.crt
+/Smooth.Identity/Certs/smooth_wildcard.cnf

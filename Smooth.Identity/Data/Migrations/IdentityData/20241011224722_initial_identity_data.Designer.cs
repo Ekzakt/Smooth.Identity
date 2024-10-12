@@ -9,18 +9,18 @@ using Smooth.Identity.Data;
 
 #nullable disable
 
-namespace Smooth.Identity.Data.Migrations
+namespace Smooth.Identity.Data.Migrations.IdentityData
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241007202415_initial_create")]
-    partial class initial_create
+    [Migration("20241011224722_initial_identity_data")]
+    partial class initial_identity_data
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("ProductVersion", "8.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);

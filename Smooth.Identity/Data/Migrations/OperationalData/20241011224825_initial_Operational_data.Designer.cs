@@ -9,18 +9,18 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Smooth.Identity.Data.Migrations
+namespace Smooth.Identity.Data.Migrations.OperationalData
 {
     [DbContext(typeof(PersistedGrantDbContext))]
-    [Migration("20241007202720_add_operationaldata")]
-    partial class add_operationaldata
+    [Migration("20241011224825_initial_Operational_data")]
+    partial class initial_Operational_data
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("ProductVersion", "8.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);

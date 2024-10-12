@@ -1,8 +1,6 @@
 ﻿using IdentityModel;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
-using Smooth.Identity.Data;
 using Smooth.Identity.Models;
 using System.Security.Claims;
 
@@ -14,9 +12,6 @@ namespace Smooth.Identity
         {
             using (var scope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
-                var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                context.Database.Migrate();
-
                 var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
                 var alice = userMgr.FindByNameAsync("alice").Result;
                 if (alice == null)
