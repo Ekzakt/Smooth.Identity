@@ -31,13 +31,18 @@ internal static class HostingExtensions
 
         builder.Services.AddCors(options =>
         {
-            options.AddPolicy("IdentityServerCorsPolicy", policy =>
+            var corsOrigins = configuration["CorsOrigins"]!.Split(',');
+
+            if (corsOrigins != null)
             {
-                policy.WithOrigins("https://web.smooth.local", "https://shop.smooth.local", "https://flaunt.smooth.local", "https://admin.smooth.local" )
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials();
-            });
+                options.AddPolicy("IdentityServerCorsPolicy", policy =>
+                {
+                    policy.WithOrigins(corsOrigins)
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                });
+            }
         });
 
         var clients = Config.Clients(builder.Configuration);
@@ -47,10 +52,10 @@ internal static class HostingExtensions
             {
                 options.UserInteraction.LoginUrl = "/Account/Login";
                 options.UserInteraction.LogoutUrl = "/Account/Logout";
-                options.UserInteraction.ErrorUrl = "/Account/Error";
+                options.UserInteraction.ErrorUrl = "/Error";
                 options.UserInteraction.ConsentUrl = "/Consent";
 
-                options.IssuerUri = "https://identity.smooth.local";
+                options.IssuerUri = configuration["IdentityServer:IssuerUri"];
                 options.Events.RaiseErrorEvents = true;
                 options.Events.RaiseInformationEvents = true;
                 options.Events.RaiseFailureEvents = true;
@@ -95,8 +100,10 @@ internal static class HostingExtensions
 
         app.UseStaticFiles();
         app.UseRouting();
+
         app.UseIdentityServer();
         app.UseAuthorization();
+
         app.MapRazorPages().RequireAuthorization();
 
         return app;
