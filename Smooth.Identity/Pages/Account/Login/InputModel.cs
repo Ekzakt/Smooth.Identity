@@ -3,7 +3,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace Smooth.Identity.Pages.Login
+namespace Smooth.Identity.Pages.Account.Login
 {
     public class InputModel
     {
