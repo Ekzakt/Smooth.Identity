@@ -78,8 +78,7 @@ internal static class HostingExtensions
             .AddInMemoryApiScopes(Config.ApiScopes)
             .AddInMemoryClients(Config.Clients(builder.Configuration))
             .AddInMemoryApiResources(Config.ApiResources)
-            .AddAspNetIdentity<ApplicationUser>()
-            .AddDeveloperSigningCredential();
+            .AddAspNetIdentity<ApplicationUser>();
 
         builder.Services.AddAuthentication();
 
