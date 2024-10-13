@@ -101,6 +101,12 @@ internal static class HostingExtensions
         app.UseStaticFiles();
         app.UseRouting();
 
+        app.UseCookiePolicy(new CookiePolicyOptions
+        {
+            Secure = CookieSecurePolicy.Always,
+            MinimumSameSitePolicy = SameSiteMode.None
+        });
+
         app.UseIdentityServer();
         app.UseAuthorization();
 
