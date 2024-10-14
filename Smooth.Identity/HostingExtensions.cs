@@ -1,8 +1,14 @@
+using Azure.Identity;
+using Azure.Security.KeyVault.Certificates;
+using Azure.Security.KeyVault.Secrets;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Azure;
 using Serilog;
 using Smooth.Identity.Data;
 using Smooth.Identity.Models;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Smooth.Identity;
 
@@ -18,6 +24,13 @@ internal static class HostingExtensions
         {
             routeOptions.LowercaseUrls = true;
         });
+
+        builder.Services
+            .AddAzureClients(clientBuilder =>
+            {
+                clientBuilder
+                    .UseCredential(new DefaultAzureCredential(GetDefaultAzureCredentialOptions()));
+            });
 
         builder.Services.AddRazorPages();
         builder.Services.AddControllersWithViews();
@@ -45,7 +58,12 @@ internal static class HostingExtensions
             }
         });
 
-        var clients = Config.Clients(builder.Configuration);
+        builder.Services.Configure<ForwardedHeadersOptions>(options =>
+        {
+            options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            options.KnownNetworks.Clear();
+            options.KnownProxies.Clear();
+        });
 
         builder.Services
             .AddIdentityServer(options =>
@@ -69,16 +87,19 @@ internal static class HostingExtensions
                     builder.UseSqlServer(sqlConnectionString, sqlServerOptionsAction =>
                         sqlServerOptionsAction.MigrationsAssembly(migrationsAssembly));
 
-                // this enables automatic token cleanup. this is optional.
                 options.EnableTokenCleanup = true;
-                options.TokenCleanupInterval = 3600; // interval in seconds (default is 3600)
+                options.TokenCleanupInterval = 3600;
             })
             .AddServerSideSessions()
             .AddInMemoryIdentityResources(Config.IdentityResources)
             .AddInMemoryApiScopes(Config.ApiScopes)
             .AddInMemoryClients(Config.Clients(builder.Configuration))
             .AddInMemoryApiResources(Config.ApiResources)
-            .AddAspNetIdentity<ApplicationUser>();
+            .AddAspNetIdentity<ApplicationUser>()
+            .AddSigningCredential(GetSigningCertificate(
+                builder.Configuration["KeyVault:VaultUri"]!,
+                builder.Configuration["KeyVault:CertificateName"]!
+        ));
 
         builder.Services.AddAuthentication();
 
@@ -87,13 +108,18 @@ internal static class HostingExtensions
 
     public static WebApplication ConfigurePipeline(this WebApplication app)
     {
+        app.UseForwardedHeaders();
         app.UseSerilogRequestLogging();
-
         app.UseCors("IdentityServerCorsPolicy");
 
         if (app.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
+        }
+        else
+        {
+            app.UseExceptionHandler("/Home/Error");
+            app.UseHsts();
         }
 
         app.UseHttpsRedirection();
@@ -114,4 +140,42 @@ internal static class HostingExtensions
 
         return app;
     }
+
+    #region Helpers
+
+    private static DefaultAzureCredentialOptions GetDefaultAzureCredentialOptions()
+    {
+        var credentials = new DefaultAzureCredentialOptions
+        {
+            ExcludeEnvironmentCredential = true,
+            ExcludeInteractiveBrowserCredential = true,
+            ExcludeAzurePowerShellCredential = true,
+            ExcludeSharedTokenCacheCredential = true,
+            ExcludeVisualStudioCodeCredential = true,
+            ExcludeVisualStudioCredential = true,
+            ExcludeAzureCliCredential = false,
+            ExcludeManagedIdentityCredential = false
+        };
+
+        return credentials;
+    }
+
+
+    private static X509Certificate2 GetSigningCertificate(string keyVaultUri, string certificateName)
+    {
+        var client = new CertificateClient(new Uri(keyVaultUri), new DefaultAzureCredential());
+
+        // Retrieve the latest version of the certificate
+        var certificateWithPrivateKey = client.GetCertificate(certificateName);
+        var certificate = certificateWithPrivateKey.Value;
+
+        // Download the secret associated with the certificate to get the private key
+        var secretClient = new SecretClient(new Uri(keyVaultUri), new DefaultAzureCredential());
+        var secret = secretClient.GetSecret(certificateName);
+
+        // Create X509Certificate2 with private key
+        return new X509Certificate2(Convert.FromBase64String(secret.Value.Value));
+    }
+
+    #endregion Helpers
 }
