@@ -97,8 +97,8 @@ internal static class HostingExtensions
             .AddInMemoryApiResources(Config.ApiResources)
             .AddAspNetIdentity<ApplicationUser>()
             .AddSigningCredential(GetSigningCertificate(
-                builder.Configuration["KeyVault:VaultUri"]!,
-                builder.Configuration["KeyVault:CertificateName"]!
+                builder.Configuration["Azure:KeyVault:VaultUri"]!,
+                builder.Configuration["Azure:KeyVault:CertificateName"]!
         ));
 
         builder.Services.AddAuthentication();
