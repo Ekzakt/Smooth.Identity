@@ -25,12 +25,12 @@ internal static class HostingExtensions
             routeOptions.LowercaseUrls = true;
         });
 
-        builder.Services
-            .AddAzureClients(clientBuilder =>
-            {
-                clientBuilder
-                    .UseCredential(new DefaultAzureCredential(GetDefaultAzureCredentialOptions()));
-            });
+        //builder.Services
+        //    .AddAzureClients(clientBuilder =>
+        //    {
+        //        clientBuilder
+        //            .UseCredential(new DefaultAzureCredential(GetDefaultAzureCredentialOptions()));
+        //    });
 
         builder.Services.AddRazorPages();
         builder.Services.AddControllersWithViews();
