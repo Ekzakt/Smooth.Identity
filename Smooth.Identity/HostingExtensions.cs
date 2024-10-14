@@ -163,14 +163,14 @@ internal static class HostingExtensions
 
     private static X509Certificate2 GetSigningCertificate(string keyVaultUri, string certificateName)
     {
-        var client = new CertificateClient(new Uri(keyVaultUri), new DefaultAzureCredential());
+        var client = new CertificateClient(new Uri(keyVaultUri), new DefaultAzureCredential(GetDefaultAzureCredentialOptions()));
 
         // Retrieve the latest version of the certificate
         var certificateWithPrivateKey = client.GetCertificate(certificateName);
         var certificate = certificateWithPrivateKey.Value;
 
         // Download the secret associated with the certificate to get the private key
-        var secretClient = new SecretClient(new Uri(keyVaultUri), new DefaultAzureCredential());
+        var secretClient = new SecretClient(new Uri(keyVaultUri), new DefaultAzureCredential(GetDefaultAzureCredentialOptions()));
         var secret = secretClient.GetSecret(certificateName);
 
         // Create X509Certificate2 with private key
