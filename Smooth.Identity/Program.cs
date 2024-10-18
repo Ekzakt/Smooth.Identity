@@ -3,6 +3,7 @@ using Smooth.Identity;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
+    .MinimumLevel.Verbose()
     .CreateBootstrapLogger();
 
 Log.Information("Starting up");
@@ -20,9 +21,7 @@ try
         .ConfigureServices()
         .ConfigurePipeline();
 
-    Log.Information("Seeding database...");
     SeedData.EnsureSeedData(app);
-    Log.Information("Done seeding database. Exiting.");
 
     app.Run();
 }
