@@ -20,28 +20,28 @@ internal static class HostingExtensions
         var sqlConnectionString = configuration.GetConnectionString("DefaultConnectionString");
         var migrationsAssembly = typeof(Config).Assembly.GetName().Name;
 
+        Log.Information("*** Configuring RouteOptions ***");
         builder.Services.Configure<RouteOptions>(routeOptions =>
         {
             routeOptions.LowercaseUrls = true;
         });
 
-        //builder.Services
-        //    .AddAzureClients(clientBuilder =>
-        //    {
-        //        clientBuilder
-        //            .UseCredential(new DefaultAzureCredential(GetDefaultAzureCredentialOptions()));
-        //    });
-
+        Log.Information("*** Adding Razor Pages ***");
         builder.Services.AddRazorPages();
+
+        Log.Information("*** Adding Controllers ***");
         builder.Services.AddControllersWithViews();
 
+        Log.Information("*** Configuring Database Context ***");
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(sqlConnectionString));
 
+        Log.Information("*** Adding Identity ***");
         builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
+        Log.Information("*** Adding CORS ***");
         builder.Services.AddCors(options =>
         {
             var corsOrigins = configuration["CorsOrigins"]!.Split(',');
@@ -58,6 +58,7 @@ internal static class HostingExtensions
             }
         });
 
+        Log.Information("*** Configuring Forwarded Headers ***");
         builder.Services.Configure<ForwardedHeadersOptions>(options =>
         {
             options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
@@ -65,6 +66,7 @@ internal static class HostingExtensions
             options.KnownProxies.Clear();
         });
 
+        Log.Information("*** Adding IdentityServer ***");
         builder.Services
             .AddIdentityServer(options =>
             {
@@ -96,11 +98,13 @@ internal static class HostingExtensions
             .AddInMemoryClients(Config.Clients(builder.Configuration))
             .AddInMemoryApiResources(Config.ApiResources)
             .AddAspNetIdentity<ApplicationUser>()
-            .AddSigningCredential(GetSigningCertificate(
-                builder.Configuration["Azure:KeyVault:VaultUri"]!,
-                builder.Configuration["Azure:KeyVault:CertificateName"]!
-        ));
+            .AddDeveloperSigningCredential();
+        //    .AddSigningCredential(GetSigningCertificate(
+        //        builder.Configuration["Azure:KeyVault:VaultUri"]!,
+        //        builder.Configuration["Azure:KeyVault:CertificateName"]!)
+        //      );
 
+        Log.Information("*** Adding Authentication ***");
         builder.Services.AddAuthentication();
 
         return builder.Build();
@@ -108,6 +112,7 @@ internal static class HostingExtensions
 
     public static WebApplication ConfigurePipeline(this WebApplication app)
     {
+        Log.Information("*** UseFordedHeaders ***");
         app.UseForwardedHeaders();
         app.UseSerilogRequestLogging();
         app.UseCors("IdentityServerCorsPolicy");
@@ -163,15 +168,19 @@ internal static class HostingExtensions
 
     private static X509Certificate2 GetSigningCertificate(string keyVaultUri, string certificateName)
     {
+        Log.Information("*** Retrieving signing certificate from Key Vault...");
         var client = new CertificateClient(new Uri(keyVaultUri), new DefaultAzureCredential(GetDefaultAzureCredentialOptions()));
 
-        // Retrieve the latest version of the certificate
+        Log.Information("*** Retrieving certificate...");
         var certificateWithPrivateKey = client.GetCertificate(certificateName);
+        Log.Information("*** " + certificateName + " retrieved with value " + certificateWithPrivateKey.Value);
         var certificate = certificateWithPrivateKey.Value;
 
         // Download the secret associated with the certificate to get the private key
+        Log.Information("*** Retrieving secret...");
         var secretClient = new SecretClient(new Uri(keyVaultUri), new DefaultAzureCredential(GetDefaultAzureCredentialOptions()));
         var secret = secretClient.GetSecret(certificateName);
+        Log.Information("*** " + certificateName + " secret retrieved with value " + secret.Value.Value);
 
         // Create X509Certificate2 with private key
         return new X509Certificate2(Convert.FromBase64String(secret.Value.Value));
