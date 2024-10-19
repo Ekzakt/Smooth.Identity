@@ -8,13 +8,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Azure.Identity" Version="1.12.1" />
-        <PackageReference Include="Azure.Security.KeyVault.Certificates" Version="4.6.0" />
-        <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.6.0" />
+        <PackageReference Include="Azure.Identity" Version="1.13.0" />
+        <PackageReference Include="Azure.Security.KeyVault.Certificates" Version="4.7.0" />
+        <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.7.0" />
         <PackageReference Include="Duende.IdentityServer.AspNetIdentity" Version="7.0.7" />
         <PackageReference Include="Duende.IdentityServer.EntityFramework" Version="7.0.7" />
         <PackageReference Include="IdentityModel" Version="7.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.10" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="8.0.10" />
         <PackageReference Include="Microsoft.AspNetCore.DataProtection.EntityFrameworkCore" Version="8.0.10" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.10" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.10" />
