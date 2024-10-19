@@ -1,6 +1,7 @@
 using Azure.Identity;
 using Azure.Security.KeyVault.Certificates;
 using Azure.Security.KeyVault.Secrets;
+using Duende.IdentityServer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -103,8 +104,15 @@ internal static class HostingExtensions
                 builder.Configuration["Azure:KeyVault:CertificateName"]!)
               );
 
-        Log.Information("*** Adding Authentication ***");
-        builder.Services.AddAuthentication();
+        builder.Services.AddAuthentication()
+            .AddGoogle("Google", options =>
+            {
+                options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+
+                options.ClientId = builder.Configuration["IdentityServer:ExternalLogins:Google:ClientId"]!;
+                options.ClientSecret = builder.Configuration["IdentityServer:ExternalLogins:Google:ClientSecret"]!;
+            });
+
 
         return builder.Build();
     }
