@@ -19,7 +19,7 @@ internal static class HostingExtensions
     {
         var configuration = builder.Configuration;
         var sqlConnectionString = configuration.GetConnectionString("DefaultConnectionString");
-        var migrationsAssembly = typeof(Config).Assembly.GetName().Name;
+        var migrationsAssembly = typeof(IdentityData).Assembly.GetName().Name;
 
         Log.Information("*** Configuring RouteOptions ***");
         builder.Services.Configure<RouteOptions>(routeOptions =>
@@ -94,10 +94,10 @@ internal static class HostingExtensions
                 options.TokenCleanupInterval = 3600;
             })
             .AddServerSideSessions()
-            .AddInMemoryIdentityResources(Config.IdentityResources)
-            .AddInMemoryApiScopes(Config.ApiScopes)
-            .AddInMemoryClients(Config.Clients(builder.Configuration))
-            .AddInMemoryApiResources(Config.ApiResources)
+            .AddInMemoryIdentityResources(IdentityData.IdentityResources)
+            .AddInMemoryApiScopes(IdentityData.ApiScopes)
+            .AddInMemoryClients(IdentityData.Clients(builder.Configuration))
+            .AddInMemoryApiResources(IdentityData.ApiResources)
             .AddAspNetIdentity<ApplicationUser>()
             .AddSigningCredential(GetSigningCertificate(
                 builder.Configuration["Azure:KeyVault:VaultUri"]!,
