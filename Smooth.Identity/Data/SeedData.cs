@@ -4,7 +4,7 @@ using Serilog;
 using Smooth.Identity.Models;
 using System.Security.Claims;
 
-namespace Smooth.Identity;
+namespace Smooth.Identity.Data;
 
 public class SeedData
 {
@@ -23,7 +23,7 @@ public class SeedData
                 alice = new ApplicationUser
                 {
                     UserName = "alice",
-                    Email = "AliceSmith@email.com",
+                    Email = "alicesmith@email.com",
                     EmailConfirmed = true,
                 };
 
@@ -37,8 +37,7 @@ public class SeedData
                 result = userManager.AddClaimsAsync(alice, new Claim[]{
                             new Claim(JwtClaimTypes.Name, "Alice Smith"),
                             new Claim(JwtClaimTypes.GivenName, "Alice"),
-                            new Claim(JwtClaimTypes.FamilyName, "Smith"),
-                            new Claim(JwtClaimTypes.WebSite, "http://alice.com"),
+                            new Claim(JwtClaimTypes.FamilyName, "Smith")
                         }).Result;
 
                 if (!result.Succeeded)
@@ -60,7 +59,7 @@ public class SeedData
                 bob = new ApplicationUser
                 {
                     UserName = "bob",
-                    Email = "BobSmith@email.com",
+                    Email = "botsmith@email.com",
                     EmailConfirmed = true
                 };
 
@@ -74,9 +73,7 @@ public class SeedData
                 result = userManager.AddClaimsAsync(bob, new Claim[]{
                             new Claim(JwtClaimTypes.Name, "Bob Smith"),
                             new Claim(JwtClaimTypes.GivenName, "Bob"),
-                            new Claim(JwtClaimTypes.FamilyName, "Smith"),
-                            new Claim(JwtClaimTypes.WebSite, "http://bob.com"),
-                            new Claim("location", "somewhere")
+                            new Claim(JwtClaimTypes.FamilyName, "Smith")
                         }).Result;
 
                 if (!result.Succeeded)
