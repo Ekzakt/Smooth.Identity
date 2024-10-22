@@ -21,28 +21,22 @@ internal static class HostingExtensions
         var sqlConnectionString = configuration.GetConnectionString("DefaultConnectionString");
         var migrationsAssembly = typeof(IdentityData).Assembly.GetName().Name;
 
-        Log.Information("*** Configuring RouteOptions ***");
         builder.Services.Configure<RouteOptions>(routeOptions =>
         {
             routeOptions.LowercaseUrls = true;
         });
 
-        Log.Information("*** Adding Razor Pages ***");
         builder.Services.AddRazorPages();
 
-        Log.Information("*** Adding Controllers ***");
         builder.Services.AddControllersWithViews();
 
-        Log.Information("*** Configuring Database Context ***");
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(sqlConnectionString));
 
-        Log.Information("*** Adding Identity ***");
         builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
-        Log.Information("*** Adding CORS ***");
         builder.Services.AddCors(options =>
         {
             var corsOrigins = configuration["CorsOrigins"]!.Split(',');
@@ -59,7 +53,6 @@ internal static class HostingExtensions
             }
         });
 
-        Log.Information("*** Configuring Forwarded Headers ***");
         builder.Services.Configure<ForwardedHeadersOptions>(options =>
         {
             options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
@@ -67,7 +60,6 @@ internal static class HostingExtensions
             options.KnownProxies.Clear();
         });
 
-        Log.Information("*** Adding IdentityServer ***");
         builder.Services
             .AddIdentityServer(options =>
             {
