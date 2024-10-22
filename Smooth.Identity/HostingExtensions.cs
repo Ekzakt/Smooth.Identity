@@ -110,7 +110,6 @@ internal static class HostingExtensions
 
     public static WebApplication ConfigurePipeline(this WebApplication app)
     {
-        Log.Information("*** UseFordedHeaders ***");
         app.UseForwardedHeaders();
         app.UseSerilogRequestLogging();
         app.UseCors("IdentityServerCorsPolicy");
