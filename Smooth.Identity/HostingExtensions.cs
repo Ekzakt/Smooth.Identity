@@ -5,7 +5,6 @@ using Duende.IdentityServer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Azure;
 using Serilog;
 using Smooth.Identity.Data;
 using Smooth.Identity.Models;
