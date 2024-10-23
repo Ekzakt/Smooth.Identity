@@ -25,7 +25,7 @@ jobs:
       - name: List files in workspace
         run: ls -R ${{ github.workspace }}
         
-      - name: Remove robots.txt on master branch
+      - name: Remove robots.txt on staging branch
         if: github.ref == 'refs/heads/staging'
         run: rm -f /home/runner/work/Smooth.Identity/Smooth.Identity/Smooth.Identity/wwwroot/robots.txt
 
