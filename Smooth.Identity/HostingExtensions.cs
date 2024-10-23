@@ -5,7 +5,6 @@ using Duende.IdentityServer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Azure;
 using Serilog;
 using Smooth.Identity.Data;
 using Smooth.Identity.Models;
@@ -19,30 +18,24 @@ internal static class HostingExtensions
     {
         var configuration = builder.Configuration;
         var sqlConnectionString = configuration.GetConnectionString("DefaultConnectionString");
-        var migrationsAssembly = typeof(Config).Assembly.GetName().Name;
+        var migrationsAssembly = typeof(IdentityData).Assembly.GetName().Name;
 
-        Log.Information("*** Configuring RouteOptions ***");
         builder.Services.Configure<RouteOptions>(routeOptions =>
         {
             routeOptions.LowercaseUrls = true;
         });
 
-        Log.Information("*** Adding Razor Pages ***");
         builder.Services.AddRazorPages();
 
-        Log.Information("*** Adding Controllers ***");
         builder.Services.AddControllersWithViews();
 
-        Log.Information("*** Configuring Database Context ***");
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(sqlConnectionString));
 
-        Log.Information("*** Adding Identity ***");
         builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
-        Log.Information("*** Adding CORS ***");
         builder.Services.AddCors(options =>
         {
             var corsOrigins = configuration["CorsOrigins"]!.Split(',');
@@ -59,7 +52,6 @@ internal static class HostingExtensions
             }
         });
 
-        Log.Information("*** Configuring Forwarded Headers ***");
         builder.Services.Configure<ForwardedHeadersOptions>(options =>
         {
             options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
@@ -67,7 +59,6 @@ internal static class HostingExtensions
             options.KnownProxies.Clear();
         });
 
-        Log.Information("*** Adding IdentityServer ***");
         builder.Services
             .AddIdentityServer(options =>
             {
@@ -94,10 +85,10 @@ internal static class HostingExtensions
                 options.TokenCleanupInterval = 3600;
             })
             .AddServerSideSessions()
-            .AddInMemoryIdentityResources(Config.IdentityResources)
-            .AddInMemoryApiScopes(Config.ApiScopes)
-            .AddInMemoryClients(Config.Clients(builder.Configuration))
-            .AddInMemoryApiResources(Config.ApiResources)
+            .AddInMemoryIdentityResources(IdentityData.IdentityResources)
+            .AddInMemoryApiScopes(IdentityData.ApiScopes)
+            .AddInMemoryClients(IdentityData.Clients(builder.Configuration))
+            .AddInMemoryApiResources(IdentityData.ApiResources)
             .AddAspNetIdentity<ApplicationUser>()
             .AddSigningCredential(GetSigningCertificate(
                 builder.Configuration["Azure:KeyVault:VaultUri"]!,
@@ -119,7 +110,6 @@ internal static class HostingExtensions
 
     public static WebApplication ConfigurePipeline(this WebApplication app)
     {
-        Log.Information("*** UseFordedHeaders ***");
         app.UseForwardedHeaders();
         app.UseSerilogRequestLogging();
         app.UseCors("IdentityServerCorsPolicy");

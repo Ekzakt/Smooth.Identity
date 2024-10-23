@@ -1,9 +1,9 @@
 ﻿using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
 
-namespace Smooth.Identity
+namespace Smooth.Identity.Data
 {
-    public static class Config
+    public static class IdentityData
     {
         public static IEnumerable<IdentityResource> IdentityResources =>
             [

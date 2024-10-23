@@ -1,5 +1,6 @@
 using Serilog;
 using Smooth.Identity;
+using Smooth.Identity.Data;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
