@@ -25,8 +25,8 @@ jobs:
       - name: List files in workspace
         run: ls -R ${{ github.workspace }}
         
-      - name: Remove robots.txt on staging branch
-        if: github.ref == 'refs/heads/staging'
+      - name: Remove robots.txt on master branch
+        if: github.ref == 'refs/heads/master'
         run: rm -f /home/runner/work/Smooth.Identity/Smooth.Identity/Smooth.Identity/wwwroot/robots.txt
 
       - name: Build with dotnet
