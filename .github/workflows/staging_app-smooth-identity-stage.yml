@@ -22,6 +22,10 @@ jobs:
           dotnet-version: '8.x'
           include-prerelease: true
 
+      - name: Remove robots.txt on master branch
+        if: github.ref == 'refs/heads/staging'
+        run: rm -f /home/runner/work/Smooth.Web/Smooth.Web/src/Smooth.Web/wwwroot/robots.txt
+
       - name: Build with dotnet
         run: dotnet build --configuration Release
 
