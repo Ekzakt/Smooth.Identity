@@ -21,10 +21,10 @@ jobs:
         with:
           dotnet-version: '8.x'
           include-prerelease: true
-
-      - name: List files in workspace
-        run: ls -R ${{ github.workspace }}
         
+      - name: Log the run number
+        run: echo "This is run number ${{ github.run_number }} of this workflow"
+  
       - name: Remove robots.txt on master branch
         if: github.ref == 'refs/heads/master'
         run: rm -f /home/runner/work/Smooth.Identity/Smooth.Identity/Smooth.Identity/wwwroot/robots.txt
