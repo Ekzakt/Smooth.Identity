@@ -46,7 +46,6 @@ namespace Smooth.Identity.Data
                     AllowOfflineAccess = true,
                     RequireConsent = false,
                     RequirePkce = true,
-
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
@@ -69,7 +68,6 @@ namespace Smooth.Identity.Data
                     AllowOfflineAccess = true,
                     RequireConsent = false,
                     RequirePkce = true,
-
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
@@ -77,6 +75,22 @@ namespace Smooth.Identity.Data
                         IdentityServerConstants.StandardScopes.Email,
                         "flauntapi.read"
                     }
+                },
+                new Client
+                {
+                    Enabled = true,
+                    ClientId = "Smooth.Flaunt",
+                    ClientName = "Smooth Flaunt BFF Proxy",
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequirePkce = true,
+                    ClientSecrets = { new Secret(configuration["IdentityServer:Clients:2:ClientSecret"].Sha256()) },
+                    RedirectUris = { configuration["IdentityServer:Clients:2:BaseUri"]! + "/signin-oidc" },
+                    PostLogoutRedirectUris = { configuration["IdentityServer:Clients:2:BaseUri"]! + "/signout-callback-oidc" },
+                    AllowedCorsOrigins = { configuration["IdentityServer:Clients:2:CorsOrigins"]! },
+                    AllowedScopes = { "openid", "profile", "flauntapi.read" },
+                    AllowOfflineAccess = true,
+                    RequireConsent = false,
+                    AlwaysIncludeUserClaimsInIdToken = true
                 }
                 // m2m client credentials flow client
                 // Flaunt.Api
