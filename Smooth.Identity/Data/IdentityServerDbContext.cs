@@ -5,9 +5,9 @@ using Smooth.Identity.Models;
 
 namespace Smooth.Identity.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IDataProtectionKeyContext
+    public class IdentityServerDbContext : IdentityDbContext<ApplicationUser>, IDataProtectionKeyContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public IdentityServerDbContext(DbContextOptions<IdentityServerDbContext> options)
             : base(options)
         {
         }
