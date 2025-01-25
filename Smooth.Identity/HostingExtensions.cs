@@ -17,8 +17,8 @@ internal static class HostingExtensions
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
         var configuration = builder.Configuration;
-        var sqlConnectionString = configuration.GetConnectionString("DefaultConnectionString");
-        var migrationsAssembly = typeof(IdentityData).Assembly.GetName().Name;
+        var sqlConnectionString = configuration.GetConnectionString("IdentityServerConnectionString");
+        var migrationsAssembly = typeof(IdentityServerData).Assembly.GetName().Name;
 
         builder.Services.Configure<RouteOptions>(routeOptions =>
         {
@@ -29,11 +29,11 @@ internal static class HostingExtensions
 
         builder.Services.AddControllersWithViews();
 
-        builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        builder.Services.AddDbContext<IdentityServerDbContext>(options =>
             options.UseSqlServer(sqlConnectionString));
 
         builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddEntityFrameworkStores<IdentityServerDbContext>()
             .AddDefaultTokenProviders();
 
         builder.Services.AddCors(options =>
@@ -85,10 +85,10 @@ internal static class HostingExtensions
                 options.TokenCleanupInterval = 3600;
             })
             .AddServerSideSessions()
-            .AddInMemoryIdentityResources(IdentityData.IdentityResources)
-            .AddInMemoryApiScopes(IdentityData.ApiScopes)
-            .AddInMemoryClients(IdentityData.Clients(builder.Configuration))
-            .AddInMemoryApiResources(IdentityData.ApiResources)
+            .AddInMemoryIdentityResources(IdentityServerData.IdentityResources)
+            .AddInMemoryApiScopes(IdentityServerData.ApiScopes)
+            .AddInMemoryClients(IdentityServerData.Clients(builder.Configuration))
+            .AddInMemoryApiResources(IdentityServerData.ApiResources)
             .AddAspNetIdentity<ApplicationUser>()
             .AddSigningCredential(GetSigningCertificate(
                 builder.Configuration["Azure:KeyVault:VaultUri"]!,
@@ -111,8 +111,8 @@ internal static class HostingExtensions
     public static WebApplication ConfigurePipeline(this WebApplication app)
     {
         app.UseForwardedHeaders();
+
         app.UseSerilogRequestLogging();
-        app.UseCors("IdentityServerCorsPolicy");
 
         if (app.Environment.IsDevelopment())
         {
@@ -132,9 +132,10 @@ internal static class HostingExtensions
         app.UseCookiePolicy(new CookiePolicyOptions
         {
             Secure = CookieSecurePolicy.Always,
-            MinimumSameSitePolicy = SameSiteMode.None
+            MinimumSameSitePolicy = SameSiteMode.None,
         });
 
+        app.UseCors("IdentityServerCorsPolicy");
         app.UseIdentityServer();
         app.UseAuthorization();
 

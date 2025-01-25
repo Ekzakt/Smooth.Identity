@@ -10,8 +10,8 @@ using Smooth.Identity.Data;
 
 namespace Smooth.Identity.Data.Migrations.IdentityData
 {
-    [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(IdentityServerDbContext))]
+    partial class IdentityServerDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

@@ -3,7 +3,7 @@ using Duende.IdentityServer.Models;
 
 namespace Smooth.Identity.Data
 {
-    public static class IdentityData
+    public static class IdentityServerData
     {
         public static IEnumerable<IdentityResource> IdentityResources =>
             [
@@ -46,13 +46,20 @@ namespace Smooth.Identity.Data
                     AllowOfflineAccess = true,
                     RequireConsent = false,
                     RequirePkce = true,
+                    AlwaysIncludeUserClaimsInIdToken = true,
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
                         "flauntapi.read"
-                    }
+                    },
+                    // Configure Refresh Token Settings
+                    AccessTokenLifetime = 3600, // 1 hour
+                    AbsoluteRefreshTokenLifetime = 2592000, // 30 days
+                    SlidingRefreshTokenLifetime = 1296000, // 15 days
+                    RefreshTokenUsage = TokenUsage.ReUse, // Allows the reuse of refresh tokens
+                    RefreshTokenExpiration = TokenExpiration.Sliding, // Enables sliding refresh
                 },
                 new Client
                 {
@@ -68,13 +75,20 @@ namespace Smooth.Identity.Data
                     AllowOfflineAccess = true,
                     RequireConsent = false,
                     RequirePkce = true,
+                    AlwaysIncludeUserClaimsInIdToken = true,
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
                         "flauntapi.read"
-                    }
+                    },
+                    // Configure Refresh Token Settings
+                    AccessTokenLifetime = 3600, // 1 hour
+                    AbsoluteRefreshTokenLifetime = 2592000, // 30 days
+                    SlidingRefreshTokenLifetime = 1296000, // 15 days
+                    RefreshTokenUsage = TokenUsage.ReUse, // Allows the reuse of refresh tokens
+                    RefreshTokenExpiration = TokenExpiration.Sliding, // Enables sliding refresh
                 },
                 new Client
                 {
@@ -87,10 +101,22 @@ namespace Smooth.Identity.Data
                     RedirectUris = { configuration["IdentityServer:Clients:2:BaseUri"]! + "/signin-oidc" },
                     PostLogoutRedirectUris = { configuration["IdentityServer:Clients:2:BaseUri"]! + "/signout-callback-oidc" },
                     AllowedCorsOrigins = { configuration["IdentityServer:Clients:2:CorsOrigins"]! },
-                    AllowedScopes = { "openid", "profile", "flauntapi.read" },
                     AllowOfflineAccess = true,
                     RequireConsent = false,
-                    AlwaysIncludeUserClaimsInIdToken = true
+                    AlwaysIncludeUserClaimsInIdToken = true,
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
+                        "flauntapi.read"
+                    },
+                    // Configure Refresh Token Settings
+                    AccessTokenLifetime = 3600, // 1 hour
+                    AbsoluteRefreshTokenLifetime = 2592000, // 30 days
+                    SlidingRefreshTokenLifetime = 1296000, // 15 days
+                    RefreshTokenUsage = TokenUsage.ReUse, // Allows the reuse of refresh tokens
+                    RefreshTokenExpiration = TokenExpiration.Sliding, // Enables sliding refresh
                 }
                 // m2m client credentials flow client
                 // Flaunt.Api
